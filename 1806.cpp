@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <algorithm>
-using namespace std;
 
 int ary[100005];
 
@@ -11,12 +9,28 @@ bool cmp(int a, int b) {
 }
 
 int find() {
-	int p1 = 0, p2 = n-1;
-	int t = 0;
+	int p1 = 0, p2 = 0;
+	int now = ary[0];
 	int result = 999999;
 	
-	while (p1 < p2) {
+	while (p1 <= p2 && p2 < n) {
+		if (now >= s) {
+			if (p2-p1+1 < result) {
+				result = p2-p1+1;
+//				printf("==%d, %d\n", p1, p2);
+			}
+		}
 		
+		if (now < s) {
+			now += ary[++p2];
+		}
+		else if (now > s) {
+			now -= ary[p1++];
+		}
+		else if (now == s) {
+			now -= ary[p1++];
+			now += ary[++p2];
+		}
 	}
 	
 	if (result == 999999) return 0;
@@ -29,8 +43,6 @@ int main() {
 	for (int i = 0; i < n; i++) {
 		scanf("%d", &ary[i]);
 	}
-	
-	sort(ary, ary+n, cmp);
 	
 	printf("%d", find());
 }
