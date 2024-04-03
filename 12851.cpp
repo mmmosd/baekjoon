@@ -1,71 +1,61 @@
 #include <stdio.h>
 #include <queue>
-#include <vector>
 using namespace std;
 
 typedef struct {
 	int p, cost;
 } pos;
 
-struct cmp {
-	bool operator()(pos a, pos b) {
-		return a.cost > b.cost;
-	}
-};
-
 int n, k;
 
 int dir[2] = {-1, 1};
 
-int find() {
-	int result = 0;
-	
-	int dist[100005] = {0,};
-	
-	for (int i = 0; i <= 100000; i++) {
-		dist[i] = 1987654321;
+void find() {
+	int result_cost = -1;
+	int result_cnt = 0;
+
+	int visited[100005] = {0,};
+
+	if (n == k) {
+		printf("0\n1");
+		return;
 	}
 	
-	priority_queue<pos, vector<pos>, cmp> pq;
+	queue<pos> q;
 	
-	pq.push({n, 0});
-	dist[n] = 0;
+	q.push({n, 0});
+
+	for (int i = 0; i <= 100000; i++) {visited[i] = 100005;}
 	
-	while (!pq.empty()) {
-		pos now = pq.top();
-		pq.pop();
+	while (!q.empty()) {
+		pos now = q.front();
+		q.pop();
 		
 		for (int i = 0; i < 3; i++) {
-			pos move;
-			int cost = 1;
-			
-			if (i == 0) {
-				move.p = now.p+1;
-			}
-			else if (i == 1) {
-				move.p = now.p-1;
-			}
-			else {
-				move.p = now.p*2;
-			}
+			pos move = {i<2?now.p+dir[i]:now.p*2, now.cost+1};
 			
 			if (move.p < 0 || move.p > 100000) continue;
-			if (dist[move.p] < cost+dist[now.p]) continue;
+			if (result_cost != -1 && move.cost > result_cost) continue;
 			
-			dist[move.p] = cost+dist[now.p];
-			pq.push({move.p, dist[move.p]});
+			if (result_cost == -1 && visited[move.p] != 100005 && move.cost > visited[move.p]) continue;
+			if (result_cost == -1) visited[move.p] = move.cost;
+
+			if (move.p == k) {
+				if (result_cost == -1) {
+					result_cost = move.cost;
+					result_cnt++;
+				}
+				else if (move.cost == result_cost) result_cnt++;
+			}
+			else q.push(move);
 		}
 	}
 	
-//	for (int i = n; i <= k; i++) {
-//		printf("==%d\n", dist[i]);
-//	}
-//	
-	return dist[k];
+	printf("%d\n%d", result_cost, result_cnt);
 }
 
 int main() {
 	scanf("%d%d", &n, &k);
 	
-	printf("%d", find());
+	find();
 }
