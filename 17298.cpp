@@ -3,8 +3,12 @@
 #include <memory.h>
 using namespace std;
 
+typedef struct {
+    int i, v;
+} node;
+
 int result[1000005];
-stack<int> s;
+stack<node> s;
 
 int n;
 
@@ -13,24 +17,23 @@ int main() {
     scanf("%d", &n);
 
     for (int i = 0; i < n; i++) {
-        int input, top = s.empty()?input+1:s.top();
+        int input;
         scanf("%d", &input);
 
+        int top = s.empty()?input+1:s.top().v;
+
         if (input > top) {
-            int j = i-1;
             while (!s.empty()) {
-                int p = s.top();
+                node p = s.top();
 
-                if (p >= input) break;
-
+                if (p.v >= input) break;
                 s.pop();
 
-                result[j] = input;
-                j--;
+                result[p.i] = input;
             }
         }
 
-        s.push(input);
+        s.push({i, input});
     }
 
 

@@ -21,6 +21,10 @@ void update(int now, int left, int right, int idx, ll diff) {
     }
 }
 
+void sum() {
+    
+}
+
 int main() {
     scanf("%d", &n);
 
