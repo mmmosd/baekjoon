@@ -1,19 +1,18 @@
 #include <stdio.h>
 
-int tc;
+int ary[1000005];
+
+int t;
 
 int main() {
-    scanf("%d", &tc);
+    scanf("%d", &t);
 
-    for (int t; = 0; t < tc; t++) {
-        int ary[1000005] = {0,};
+    for (int tc = 0; tc < t; tc++) {
         int n;
         scanf("%d", &n);
 
         for (int i = 0; i < n; i++) {
             scanf("%d", &ary[i]);
         }
-
-        
     }
 }

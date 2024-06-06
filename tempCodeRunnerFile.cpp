@@ -1,40 +1,45 @@
 #include <stdio.h>
 #include <stack>
-#include <memory.h>
 using namespace std;
 
-int result[1000005];
-stack<int> s;
+typedef long long ll;
 
 int n;
 
 int main() {
-    memset(result,-1,sizeof(result));
     scanf("%d", &n);
 
+    stack<ll> s;
+    ll now_size = 0;
+    ll result = 0;
+
     for (int i = 0; i < n; i++) {
-        int input, top = s.empty()?input+1:s.top();
-        scanf("%d", &input);
+        ll temp;
+        scanf("%lld", &temp);
 
-        if (input > top) {
-            int j = i-1;
+        if (s.size() > 0 && temp < s.top()) {
+            ll min = s.top(), len = s.size();
             while (!s.empty()) {
-                int p = s.top();
-
-                if (p >= input) break;
+                if (s.top() < min) {
+                    min = s.top();
+                }
 
                 s.pop();
+            }
 
-                result[j] = input;
-                j--;
+            now_size = min*len;
+
+            if (now_size > result) {
+                result = now_size;
             }
         }
-
-        s.push(input);
+        else {
+            s.push(temp);
+        }
+        
+        // 현재 top보다 temp가 작다면 => 모두 pop하며, 그 때의 min값과 그 전에 있던 stack의 크기를 곱한 값이 직사각형의 크기가 된다.
+        // 아니라면 걍 push ㅇㅇ
     }
 
-
-    for (int i = 0; i < n; i++) {
-        printf("%d ", result[i]);
-    }
+    printf("%lld", result);
 }
