@@ -4,42 +4,53 @@ using namespace std;
 
 typedef long long ll;
 
+typedef struct {
+    ll height, idx;
+} stick;
+
 int n;
 
 int main() {
     scanf("%d", &n);
 
-    stack<ll> s;
-    ll now_size = 0;
+    stack<stick> s;
     ll result = 0;
 
-    for (int i = 0; i < n; i++) {
-        ll temp;
-        scanf("%lld", &temp);
+    int i;
+    for (i = 1; i <= n; i++) {
+        ll in;
+        scanf("%lld", &in);
 
-        if (s.size() > 0 && temp < s.top()) {
-            ll min = s.top(), len = s.size();
+        if (s.size() > 0 && in < s.top().height) {
+            ll size = 0;
             while (!s.empty()) {
-                if (s.top() < min) {
-                    min = s.top();
-                }
+                stick now = s.top();
 
+                if (now.height <= in) break;
                 s.pop();
+
+                if (size < now.height*(i-now.idx)) size = now.height*(i-now.idx);
+                printf("==%d\n", now.height*(i-now.idx));
             }
 
-            now_size = min*len;
+            if (size > result) result = size;
+        }
 
-            if (now_size > result) {
-                result = now_size;
-            }
-        }
-        else {
-            s.push(temp);
-        }
-        
-        // 현재 top보다 temp가 작다면 => 모두 pop하며, 그 때의 min값과 그 전에 있던 stack의 크기를 곱한 값이 직사각형의 크기가 된다.
-        // 아니라면 걍 push ㅇㅇ
+
+        s.push({in, i});
     }
+
+    ll size = 0;
+    while (!s.empty()) {
+        stick now = s.top();
+        s.pop();
+
+        if (size < now.height*(i-now.idx)) size = now.height*(i-now.idx);
+
+        printf("==%d\n", now.height*(i-now.idx));
+    }
+
+    if (size > result) result = size;
 
     printf("%lld", result);
 }
