@@ -2,32 +2,47 @@
 #include <stack>
 using namespace std;
 
-stack<int> s;
+typedef long long ll;
 
-int result;
+typedef struct {
+    ll v, scnt;
+} hum;
 
-int n;
+stack<hum> s;
+
+ll result;
+
+ll n;
 
 int main() {
-    scanf("%d", &n);
+    scanf("%lld", &n);
 
-    result = n-1;
-    for (int i = 0; i < n; i++) {
-        int in;
-        scanf("%d", &in);
+    for (ll i = 0; i < n; i++) {
+        ll temp;
+        scanf("%lld", &temp);
 
-        if (s.empty()) {
-            s.push(in);
-            continue;
-        }
-
-        while (!s.empty() && s.top() <= in) {
+        ll max = 0;
+        while (!s.empty() && s.top().v < temp) {
+            if (max <= s.top().v) {
+                max = s.top().v;
+                result+=s.top().scnt+1;
+            }
+            
             s.pop();
-            result++;
         }
-        
-        s.push(in);
-    }
 
-    printf("%d", result);
+        ll scnt = 0;
+        while (!s.empty() && s.top().v == temp) {
+            scnt+=s.top().scnt+1;
+            s.pop();
+        }
+
+        result += scnt;
+
+        if (!s.empty()) result++;
+
+        s.push({temp, scnt});
+    }
+    
+    printf("%lld", result);
 }
