@@ -4,53 +4,22 @@ using namespace std;
 
 typedef long long ll;
 
-typedef struct {
-    ll height, idx;
-} stick;
-
-int n;
+stack<int> s;
 
 int main() {
+    int n;
     scanf("%d", &n);
 
-    stack<stick> s;
-    ll result = 0;
-
-    int i;
-    for (i = 1; i <= n; i++) {
-        ll in;
-        scanf("%lld", &in);
-
-        if (s.size() > 0 && in < s.top().height) {
-            ll size = 0;
-            while (!s.empty()) {
-                stick now = s.top();
-
-                if (now.height <= in) break;
-                s.pop();
-
-                if (size < now.height*(i-now.idx)) size = now.height*(i-now.idx);
-                printf("==%d\n", now.height*(i-now.idx));
-            }
-
-            if (size > result) result = size;
-        }
-
-
-        s.push({in, i});
+    int ary[100005] = {0,};
+    
+    int min = 1000000005;
+    for (int i = 0; i < n; i++) {
+        int input;
+        scanf("%d", &input);
+        
+        
     }
 
-    ll size = 0;
-    while (!s.empty()) {
-        stick now = s.top();
-        s.pop();
 
-        if (size < now.height*(i-now.idx)) size = now.height*(i-now.idx);
-
-        printf("==%d\n", now.height*(i-now.idx));
-    }
-
-    if (size > result) result = size;
-
-    printf("%lld", result);
+    printf("%d", max);
 }
